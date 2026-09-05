@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Roboverz — Launching Soon</title>
+<meta name="description" content="Roboverz — The next generation robotics ecosystem. Launching August 22, 2026."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --orange:#E8500A;
+  --orange-d:#c44008;
+  --black:#111111;
+  --gray:#6B7280;
+  --light:#F7F7F7;
+  --border:#E2E2E2;
+  --white:#FFFFFF;
+}
+
+html,body{
+  height:100%;
+  font-family:'Inter',sans-serif;
+  background:var(--white);
+  color:var(--black);
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ════════════════════════════════════════
+   WRAPPER — full viewport, two columns
+════════════════════════════════════════ */
+.wrapper{
+  display:flex;
+  min-height:100vh;
+  width:100%;
+  position:relative;
+}
+
+/* ── LEFT — robot panel ── */
+.left{
+  position:relative;
+  width:45%;
+  flex-shrink:0;
+  background:#fff;
+  clip-path:polygon(0 0, 90% 0, 100% 100%, 0 100%);
+  animation:panelIn 1s cubic-bezier(.16,1,.3,1) both;
+}
+
+@keyframes panelIn{
+  from{transform:translateX(-50px);opacity:0;}
+  to{transform:translateX(0);opacity:1;}
+}
+
+.left-bg{
+  position:absolute;inset:0;
+  background:#fff;
+}
+
+/* scanning accent line */
+.scan-line{
+  position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(232,80,10,.35),transparent);
+  animation:scan 6s ease-in-out infinite;
+  z-index:4;pointer-events:none;
+}
+@keyframes scan{
+  0%{top:8%;opacity:0;}10%{opacity:1;}90%{opacity:1;}100%{top:92%;opacity:0;}
+}
+
+.corner-dot{
+  position:absolute;top:36px;right:70px;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--orange);
+  box-shadow:0 0 12px rgba(232,80,10,.5);
+  animation:dotPulse 2s ease-in-out infinite;
+}
+@keyframes dotPulse{
+  0%,100%{transform:scale(1);opacity:1;}
+  50%{transform:scale(1.6);opacity:.5;}
+}
+
+.robot-img{
+  position:absolute;
+  bottom:0;
+  left:-5%;
+  width:110%;
+  height:96%;
+  object-fit:contain;
+  object-position:bottom left;
+  filter:drop-shadow(16px 16px 48px rgba(0,0,0,.12));
+  animation:robotEnter 1.2s cubic-bezier(.16,1,.3,1) .2s both, robotFloat 7s ease-in-out infinite;
+  transform-origin:center bottom;
+  /* Allow arm to overflow clip boundary */
+  overflow:visible;
+}
+@keyframes robotEnter{
+  from{transform:translateY(70px);opacity:0;}
+  to{transform:translateY(0);opacity:1;}
+}
+@keyframes robotFloat{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-16px);}
+}
+
+/* ── RIGHT — content ── */
+.right{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:60px 72px 80px 72px;
+  position:relative;
+  background:var(--white);
+  animation:contentIn 1s cubic-bezier(.16,1,.3,1) .1s both;
+}
+@keyframes contentIn{
+  from{transform:translateX(30px);opacity:0;}
+  to{transform:translateX(0);opacity:1;}
+}
+
+/* ── SOCIAL TOP-RIGHT ── */
+.social-nav{
+  position:fixed;top:30px;right:52px;
+  display:flex;align-items:center;gap:20px;
+  z-index:100;
+  animation:fadeDown .8s ease .6s both;
+}
+@keyframes fadeDown{
+  from{transform:translateY(-10px);opacity:0;}
+  to{transform:translateY(0);opacity:1;}
+}
+.social-nav a{
+  color:var(--black);text-decoration:none;
+  display:flex;align-items:center;justify-content:center;
+  transition:color .2s,transform .2s;
+}
+.social-nav a:hover{color:var(--orange);transform:translateY(-2px);}
+.social-sep{width:1px;height:18px;background:#ccc;}
+.login-link{
+  background:var(--orange);color:#fff !important;
+  font-weight:700;font-size:13px;letter-spacing:.03em;
+  padding:9px 20px;border-radius:6px;
+  transition:background .2s,transform .15s !important;
+}
+.login-link:hover{background:var(--orange-d);color:#fff !important;transform:translateY(-2px) !important;}
+
+/* mobile social nav — inside flow */
+.social-nav-mobile{
+  display:none;
+  align-items:center;
+  gap:18px;
+  margin-bottom:20px;
+  animation:fadeUp .7s ease .35s both;
+}
+
+/* ── CONTENT blocks ── */
+.logo{margin-bottom:8px;animation:fadeUp .7s ease .3s both;}
+
+@keyframes fadeUp{
+  from{transform:translateY(18px);opacity:0;}
+  to{transform:translateY(0);opacity:1;}
+}
+
+.logo-text{
+  font-size:clamp(2.8rem,4vw,4.6rem);
+  font-weight:900;
+  letter-spacing:-2.5px;
+  line-height:1;
+  display:inline-flex;align-items:baseline;
+}
+/* Robo = orange, ver = black, z = orange */
+.logo-robo{color:var(--orange);}
+.logo-ver{color:var(--black);}
+.logo-z{color:var(--orange);}
+
+.tagline{
+  font-size:clamp(.68rem,.8vw,.82rem);
+  font-weight:700;
+  letter-spacing:.26em;
+  color:var(--black);
+  margin-top:8px;
+  display:flex;align-items:center;gap:8px;
+  animation:fadeUp .7s ease .4s both;
+}
+.tagline-dot{color:var(--orange);font-size:1em;}
+
+.launch-label{
+  display:flex;align-items:center;gap:14px;
+  margin:26px 0 20px;
+  animation:fadeUp .7s ease .45s both;
+}
+.launch-line{width:38px;height:2px;background:var(--orange);}
+.launch-text{
+  font-size:.72rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--orange);
+}
+
+.headline{
+  font-size:clamp(1.9rem,3.2vw,3rem);
+  font-weight:800;line-height:1.18;
+  letter-spacing:-1px;color:var(--black);
+  margin-bottom:18px;
+  animation:fadeUp .7s ease .55s both;
+}
+.headline .hl-orange{color:var(--orange);}
+.hl-underline{
+  position:relative;display:inline-block;
+}
+.hl-underline::after{
+  content:'';position:absolute;
+  bottom:-3px;left:0;width:0;height:3px;
+  background:var(--orange);border-radius:2px;
+  animation:lineGrow .9s ease 1.4s forwards;
+}
+@keyframes lineGrow{to{width:100%;}}
+
+.desc{
+  font-size:clamp(.88rem,1vw,1rem);
+  color:var(--gray);line-height:1.8;
+  max-width:480px;
+  margin-bottom:32px;
+  animation:fadeUp .7s ease .65s both;
+}
+
+/* ── COUNTDOWN ── */
+.countdown{
+  display:flex;align-items:flex-start;
+  gap:0;margin-bottom:36px;
+  animation:fadeUp .7s ease .7s both;
+}
+.count-item{
+  display:flex;flex-direction:column;
+  align-items:flex-start;gap:5px;
+}
+.count-sep-wrap{
+  padding:0 18px;
+  display:flex;align-items:flex-start;
+  padding-top:4px;
+}
+.sep-char{
+  font-size:clamp(2rem,3vw,3.6rem);
+  font-weight:800;color:var(--border);
+  line-height:1;user-select:none;
+}
+.count-num{
+  font-size:clamp(2.4rem,4vw,4rem);
+  font-weight:800;color:var(--orange);
+  line-height:1;min-width:60px;
+  display:inline-block;
+}
+.count-num.tick{animation:numTick .28s cubic-bezier(.4,0,.2,1);}
+@keyframes numTick{
+  0%{transform:translateY(-6px);opacity:.4;}
+  100%{transform:translateY(0);opacity:1;}
+}
+.count-label{
+  font-size:clamp(.58rem,.65vw,.72rem);
+  font-weight:700;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gray);
+}
+
+/* ── FORM ── */
+.form-wrap{animation:fadeUp .7s ease .8s both;width:100%;max-width:520px;}
+
+.notify-form{
+  display:flex;gap:0;
+  border:1.5px solid var(--border);
+  border-radius:7px;overflow:hidden;
+  background:var(--white);
+  box-shadow:0 2px 16px rgba(0,0,0,.06);
+  transition:border-color .25s,box-shadow .25s;
+}
+.notify-form:focus-within{
+  border-color:var(--orange);
+  box-shadow:0 4px 24px rgba(232,80,10,.12);
+}
+.notify-form input{
+  flex:1;padding:16px 22px;
+  border:none;outline:none;
+  font-size:clamp(.88rem,1vw,1rem);
+  font-family:'Inter',sans-serif;
+  color:var(--black);background:transparent;
+  min-width:0;
+}
+.notify-form input::placeholder{color:#aaa;}
+.btn-notify{
+  padding:16px 26px;
+  background:var(--orange);color:#fff;border:none;
+  font-size:clamp(.78rem,.9vw,.88rem);
+  font-weight:700;font-family:'Inter',sans-serif;
+  letter-spacing:.06em;text-transform:uppercase;
+  cursor:pointer;white-space:nowrap;
+  display:flex;align-items:center;gap:10px;
+  transition:background .2s,transform .15s;
+}
+.btn-notify:hover{background:var(--orange-d);}
+.btn-notify:active{transform:scale(.98);}
+.btn-notify:disabled{opacity:.7;cursor:not-allowed;}
+.arrow{font-size:1rem;transition:transform .2s;}
+.btn-notify:hover .arrow{transform:translateX(4px);}
+
+.form-hint{margin-top:10px;font-size:.76rem;color:#aaa;font-weight:500;}
+
+.form-msg{
+  display:none;align-items:center;gap:8px;
+  font-weight:600;font-size:.9rem;margin-top:12px;
+}
+.form-msg.success{color:#16a34a;}
+.form-msg.already{color:var(--orange);}
+.form-msg.error{color:#dc2626;}
+
+/* ── FOOTER ── */
+.footer{
+  position:fixed;bottom:0;left:0;right:0;
+  padding:14px 52px;
+  font-size:.76rem;color:var(--gray);
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  flex-wrap:wrap;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(10px);
+  border-top:1px solid var(--border);
+  z-index:10;
+  animation:fadeUp .8s ease 1s both;
+}
+.footer a{color:var(--orange);text-decoration:none;font-weight:600;}
+.footer a:hover{text-decoration:underline;}
+.footer-sep{color:var(--border);}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+
+/* ── Tablet landscape (900–1200px) ── */
+@media(max-width:1200px){
+  .right{padding:50px 52px 80px;}
+  .social-nav{right:36px;top:24px;}
+}
+
+/* ── Tablet (600–900px) — robot watermark, single column ── */
+@media(max-width:900px){
+  html,body{overflow-x:hidden;overflow-y:auto;background:#fff;}
+
+  .left{display:none !important;}
+
+  .wrapper{flex-direction:column;min-height:100vh;position:relative;}
+
+  .wrapper::before{
+    content:'';
+    position:fixed;inset:0;
+    background:url('robot.png') center 5% / 60% auto no-repeat;
+    opacity:0.07;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .right{
+    position:relative;z-index:1;
+    width:100%;flex:1;
+    padding:60px 52px 40px;
+    justify-content:flex-start;
+    background:transparent;
+  }
+
+  .social-nav{display:none;}
+  .social-nav-mobile{display:flex;margin-bottom:26px;}
+
+  .logo-text{font-size:3.4rem;letter-spacing:-1.5px;}
+  .tagline{font-size:.76rem;letter-spacing:.24em;}
+  .launch-label{margin:22px 0 16px;}
+  .headline{font-size:2.5rem;margin-bottom:16px;}
+  .desc{max-width:580px;font-size:.96rem;}
+  .count-sep-wrap{padding:0 14px;}
+  .count-num{font-size:3.2rem;min-width:64px;}
+  .sep-char{font-size:2.6rem;}
+  .countdown{margin-bottom:32px;}
+  .form-wrap{max-width:520px;}
+  .notify-form{flex-direction:column;border-radius:10px;}
+  .btn-notify{width:100%;justify-content:center;border-radius:0 0 8px 8px;padding:15px 20px;}
+
+  .footer{
+    position:static;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:none;
+    border-top:1px solid var(--border);
+    padding:20px 32px;margin-top:36px;
+    font-size:.76rem;flex-direction:column;gap:6px;text-align:center;
+  }
+}
+
+/* ── Mobile (≤600px) — robot as faded watermark, single column ── */
+@media(max-width:600px){
+  html,body{overflow-x:hidden;overflow-y:auto;background:#fff;}
+
+  /* Hide left panel completely */
+  .left{display:none !important;}
+
+  /* Single column wrapper */
+  .wrapper{flex-direction:column;min-height:100vh;position:relative;}
+
+  /* Robot as faint full-page background watermark */
+  .wrapper::before{
+    content:'';
+    position:fixed;inset:0;
+    background:url('robot.png') center 5% / 95% auto no-repeat;
+    opacity:0.07;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* All content on top */
+  .right{
+    position:relative;z-index:1;
+    width:100%;flex:1;
+    padding:50px 22px 30px;
+    justify-content:flex-start;
+    background:transparent;
+  }
+
+  /* Social — inline at top of content */
+  .social-nav{display:none;}
+  .social-nav-mobile{display:flex;margin-bottom:22px;}
+
+  /* Logo */
+  .logo{margin-bottom:10px;}
+  .logo-text{font-size:2.8rem;letter-spacing:-1px;}
+  .tagline{font-size:.7rem;letter-spacing:.22em;}
+
+  /* Launch label */
+  .launch-label{margin:20px 0 14px;}
+  .launch-line{width:28px;}
+
+  /* Headline */
+  .headline{font-size:1.95rem;letter-spacing:-.5px;line-height:1.2;margin-bottom:14px;}
+
+  /* Description */
+  .desc{font-size:.9rem;line-height:1.75;margin-bottom:26px;max-width:100%;}
+
+  /* Countdown */
+  .countdown{margin-bottom:28px;}
+  .count-sep-wrap{padding:0 10px;}
+  .sep-char{font-size:2rem;}
+  .count-num{font-size:2.6rem;min-width:54px;}
+  .count-label{font-size:.6rem;letter-spacing:.15em;}
+
+  /* Form */
+  .form-wrap{max-width:100%;}
+  .notify-form{flex-direction:column;border-radius:12px;}
+  .notify-form input{padding:15px 18px;font-size:.95rem;}
+  .btn-notify{
+    width:100%;justify-content:center;
+    border-radius:0 0 10px 10px;padding:15px 20px;font-size:.9rem;
+  }
+  .form-hint{font-size:.76rem;margin-top:10px;}
+
+  /* Footer inline */
+  .footer{
+    position:static;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:none;
+    border-top:1px solid var(--border);
+    padding:18px 24px;margin-top:32px;
+    font-size:.74rem;flex-direction:column;gap:5px;text-align:center;
+  }
+}
+
+/* ── Small mobile (≤380px) ── */
+@media(max-width:380px){
+  .logo-text{font-size:2.3rem;}
+  .headline{font-size:1.65rem;}
+  .count-num{font-size:2.1rem;min-width:44px;}
+  .count-sep-wrap{padding:0 7px;}
+  .sep-char{font-size:1.7rem;}
+  .right{padding:46px 16px 24px;}
+}
+</style>
+<script>
+!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+" (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+posthog.init('phc_ncoqCraGV7ZmrepWzLsxLNFu2BBg6UGbUxiPMQcRno8b', {
+    api_host: 'https://us.i.posthog.com',
+    defaults: '2026-01-30',
+});
+</script>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- ── LEFT — Robot panel ── -->
+  <div class="left">
+    <div class="left-bg"></div>
+    <div class="scan-line"></div>
+    <div class="corner-dot"></div>
+    <img class="robot-img" src="robot.png" alt="Roboverz Robot"
+         onerror="this.style.opacity='0'"/>
+  </div>
+
+  <!-- ── RIGHT — Content panel ── -->
+  <div class="right">
+
+    <!-- Social icons — desktop fixed top-right -->
+    <nav class="social-nav" aria-label="Social links">
+      <a href="https://app.roboverz.com/login" class="login-link" title="Sign in to Roboverz">Login</a>
+      <div class="social-sep"></div>
+      <a href="http://linkedin.com/in/roboverz" target="_blank" rel="noopener" title="LinkedIn">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+          <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+        </svg>
+      </a>
+      <div class="social-sep"></div>
+      <a href="https://www.instagram.com/roboverz/" target="_blank" rel="noopener" title="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        </svg>
+      </a>
+    </nav>
+
+    <!-- Social icons — mobile inline -->
+    <nav class="social-nav-mobile" aria-label="Social links">
+      <a href="https://app.roboverz.com/login" title="Sign in to Roboverz" class="login-link" style="text-decoration:none;display:flex;align-items:center;">Login</a>
+      <a href="http://linkedin.com/in/roboverz" target="_blank" rel="noopener" title="LinkedIn" style="color:var(--black);text-decoration:none;display:flex;align-items:center;transition:color .2s;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+          <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+        </svg>
+      </a>
+      <a href="https://www.instagram.com/roboverz/" target="_blank" rel="noopener" title="Instagram" style="color:var(--black);text-decoration:none;display:flex;align-items:center;transition:color .2s;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        </svg>
+      </a>
+    </nav>
+
+    <!-- Logo -->
+    <div class="logo">
+      <div class="logo-text">
+        <span class="logo-robo">Robo</span><span class="logo-ver">ver</span><span class="logo-z">z</span>
+      </div>
+      <div class="tagline">
+        BUILD <span class="tagline-dot">•</span> INNOVATE <span class="tagline-dot">•</span> DEPLOY
+      </div>
+    </div>
+
+    <!-- Launching soon label -->
+    <div class="launch-label">
+      <div class="launch-line"></div>
+      <span class="launch-text">Launching Soon</span>
+      <div class="launch-line"></div>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="headline">
+      The Next Generation<br/>
+      Robotics <span class="hl-orange hl-underline">Ecosystem.</span>
+    </h1>
+
+    <!-- Description -->
+    <p class="desc">
+      Roboverz is an all-in-one platform empowering builders, innovators,
+      and organizations to build, collaborate, and deploy real-world
+      robotics solutions.
+    </p>
+
+    <!-- Countdown -->
+    <div class="countdown" role="timer" aria-label="Countdown to launch">
+      <div class="count-item">
+        <div class="count-num" id="cd-days">—</div>
+        <div class="count-label">Days</div>
+      </div>
+      <div class="count-sep-wrap"><span class="sep-char" aria-hidden="true">|</span></div>
+      <div class="count-item">
+        <div class="count-num" id="cd-hours">—</div>
+        <div class="count-label">Hours</div>
+      </div>
+      <div class="count-sep-wrap"><span class="sep-char" aria-hidden="true">|</span></div>
+      <div class="count-item">
+        <div class="count-num" id="cd-mins">—</div>
+        <div class="count-label">Minutes</div>
+      </div>
+      <div class="count-sep-wrap"><span class="sep-char" aria-hidden="true">|</span></div>
+      <div class="count-item">
+        <div class="count-num" id="cd-secs">—</div>
+        <div class="count-label">Seconds</div>
+      </div>
+    </div>
+
+    <!-- Notify form -->
+    <div class="form-wrap">
+      <form class="notify-form" id="notifyForm" novalidate>
+        <input type="email" id="emailInput" placeholder="Enter your email" autocomplete="email" required/>
+        <button type="submit" class="btn-notify" id="notifyBtn">
+          Notify Me <span class="arrow">→</span>
+        </button>
+      </form>
+      <p class="form-hint" id="formHint">Be the first to know when we launch.</p>
+      <div class="form-msg" id="formMsg"></div>
+    </div>
+
+  </div><!-- /right -->
+</div><!-- /wrapper -->
+
+<!-- Footer -->
+<footer class="footer">
+  <span>© <a href="https://app.roboverz.com/login" style="color:var(--gray);text-decoration:none;font-weight:400;border-bottom:1px solid transparent;transition:border-color .2s;" onmouseover="this.style.borderBottomColor='var(--gray)'" onmouseout="this.style.borderBottomColor='transparent'" title="Sign in">2026</a> <a href="http://linkedin.com/in/roboverz" target="_blank" rel="noopener">Roboverz</a>. All rights reserved.</span>
+  <span class="footer-sep">·</span>
+  <a href="mailto:theroboverz@gmail.com">theroboverz@gmail.com</a>
+</footer>
+
+<script>
+// ── Countdown to August 22, 2026 (midnight IST) ──────────────────────────
+const LAUNCH = new Date('2026-08-22T00:00:00+05:30').getTime();
+
+const elDays  = document.getElementById('cd-days');
+const elHours = document.getElementById('cd-hours');
+const elMins  = document.getElementById('cd-mins');
+const elSecs  = document.getElementById('cd-secs');
+
+function pad(n){ return String(Math.max(0, Math.floor(n))).padStart(2,'0'); }
+
+function setNum(el, val){
+  if(el.textContent !== val){
+    el.textContent = val;
+    el.classList.remove('tick');
+    void el.offsetWidth;
+    el.classList.add('tick');
+  }
+}
+
+function updateCountdown(){
+  const diff = Math.max(0, LAUNCH - Date.now());
+  const ts   = diff / 1000;
+  setNum(elDays,  pad(ts / 86400));
+  setNum(elHours, pad((ts % 86400) / 3600));
+  setNum(elMins,  pad((ts % 3600)  / 60));
+  setNum(elSecs,  pad(ts % 60));
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ── Notify form → backend API ─────────────────────────────────────────────
+const form     = document.getElementById('notifyForm');
+const emailIn  = document.getElementById('emailInput');
+const notifyBtn= document.getElementById('notifyBtn');
+const formHint = document.getElementById('formHint');
+const formMsg  = document.getElementById('formMsg');
+
+function showMsg(text, type){
+  formMsg.textContent = text;
+  formMsg.className   = 'form-msg ' + type;
+  formMsg.style.display = 'flex';
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = emailIn.value.trim();
+  if(!email){ emailIn.focus(); return; }
+
+  notifyBtn.disabled = true;
+  notifyBtn.textContent = 'Sending…';
+
+  try {
+    const res  = await fetch('/api/notify', {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({ email })
+    });
+    const data = await res.json();
+
+    form.style.display = 'none';
+    formHint.style.display = 'none';
+
+    if(data.status === 'success'){
+      posthog.capture('waitlist_signup', { email });
+      showMsg("✅ You're on the list! We'll notify you at launch.", 'success');
+    } else if(data.status === 'already'){
+      showMsg("🔔 You're already on the list!", 'already');
+    } else {
+      showMsg('❌ ' + (data.message || 'Something went wrong.'), 'error');
+      form.style.display = 'flex';
+      notifyBtn.disabled = false;
+      notifyBtn.innerHTML = 'Notify Me <span class="arrow">→</span>';
+    }
+  } catch(err){
+    showMsg('❌ Could not connect. Please try again.', 'error');
+    form.style.display = 'flex';
+    notifyBtn.disabled = false;
+    notifyBtn.innerHTML = 'Notify Me <span class="arrow">→</span>';
+  }
+});
+
+// ── Mouse parallax on robot ───────────────────────────────────────────────
+const robot = document.querySelector('.robot-img');
+let ticking = false;
+
+document.addEventListener('mousemove', (e) => {
+  if(ticking || !robot || window.innerWidth <= 900) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    const mx = (e.clientX / window.innerWidth  - 0.5) * 12;
+    const my = (e.clientY / window.innerHeight - 0.5) * 7;
+    robot.style.transform = `translateY(${my}px) translateX(${mx * 0.3}px)`;
+    robot.style.transition = 'transform .9s cubic-bezier(.25,.46,.45,.94)';
+    ticking = false;
+  });
+});
+</script>
+</body>
+</html>
